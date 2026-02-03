@@ -17,7 +17,6 @@ export interface AskService_UsrPromptRequest {
   voiceStreamId: string;
   location: AskService_Location | undefined;
   attachmentIds: string[];
-  actrId: string;
 }
 
 export interface AskService_AssistantReply {
@@ -110,14 +109,6 @@ export const AskService_UsrPromptRequest = {
       parts.push(valueBytes);
     }
 
-    if (message.actrId !== undefined && message.actrId !== null) {
-      const tag = 58;
-      const message_actrIdBytes = Buffer.from(message.actrId, 'utf8');
-      parts.push(encodeVarint(tag));
-      parts.push(encodeVarint(message_actrIdBytes.length));
-      parts.push(message_actrIdBytes);
-    }
-
     return Buffer.concat(parts);
   },
 
@@ -129,7 +120,6 @@ export const AskService_UsrPromptRequest = {
     let voiceStreamId = '';
     let location = undefined;
     let attachmentIds = [];
-    let actrId = '';
 
     while (offset < buffer.length) {
       const tagResult = decodeVarint(buffer, offset);
@@ -167,9 +157,6 @@ export const AskService_UsrPromptRequest = {
           case 6:
             attachmentIds.push(value.toString('utf8'));
             break;
-          case 7:
-            actrId = value.toString('utf8');
-            break;
           default:
             break;
         }
@@ -186,7 +173,6 @@ export const AskService_UsrPromptRequest = {
       voiceStreamId,
       location,
       attachmentIds,
-      actrId,
     };
   },
 };

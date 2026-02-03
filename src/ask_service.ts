@@ -25,15 +25,8 @@ export class AskServiceHandler implements AskServiceHandlers {
         // Sleep for 1s
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // Parse actr_id from string if provided
-        let targetActrId: ActrId | undefined;
-        if (request.actrId) {
-          try {
-            targetActrId = JSON.parse(request.actrId);
-          } catch (e) {
-            console.error('Failed to parse actrId:', request.actrId);
-          }
-        }
+        // Get targetActrId from context callId
+        const targetActrId = ctx.callId();
 
         // Send 3 data stream chunks
         for (let i = 1; i <= 3; i++) {
