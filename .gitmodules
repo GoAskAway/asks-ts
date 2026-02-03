@@ -1,0 +1,3 @@
+[submodule "protos/local"]
+	path = protos/local
+	url = https://github.com/GoAskAway/askaway-proto
