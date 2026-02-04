@@ -22,17 +22,16 @@ Only refresh `src/generated`:
 npm run codegen:proto
 ```
 
-## Run
+## Run (recommended)
 
 ```bash
-npm run build
-npm run start
+npm run dev
 ```
 
 `Actr.toml` is loaded from the current working directory by default. You can override it with:
 
 ```bash
-ACTR_CONFIG=/path/to/Actr.toml npm run start
+ACTR_CONFIG=/path/to/Actr.toml npm run dev
 ```
 
 ## Routes
