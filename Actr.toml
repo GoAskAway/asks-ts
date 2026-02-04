@@ -1,5 +1,5 @@
 edition = 1
-exports = ["./protos/local/ask_service.proto"]
+exports = ["askaway-proto/ask.proto"]
 
 [package]
 name = "ask-service"

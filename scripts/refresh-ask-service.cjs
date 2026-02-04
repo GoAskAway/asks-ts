@@ -39,7 +39,7 @@ function main() {
     '--config',
     'Actr.toml',
     '--proto-root',
-    'protos/local',
+    'askaway-proto',
     '--out',
     'src/generated',
     '--dist-import',
@@ -48,7 +48,7 @@ function main() {
 
   const serviceArgs = [
     '--proto',
-    'protos/local/ask_service.proto',
+    'askaway-proto/ask.proto',
     '--out-dir',
     'src',
     '--service',

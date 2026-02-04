@@ -27,10 +27,10 @@ function parseArgs(argv) {
 
 function usage() {
   const message = [
-    'Usage: generate-ask-service --proto <ask_service.proto> [--out-dir <src>] [--service <ServiceName>] [--force]',
+    'Usage: generate-ask-service --proto <ask.proto> [--out-dir <src>] [--service <ServiceName>] [--force]',
     '',
     'Example:',
-    '  node scripts/generate-ask-service.cjs --proto protos/local/ask_service.proto --out-dir src --service AskService',
+    '  node scripts/generate-ask-service.cjs --proto askaway-proto/ask.proto --out-dir src --service AskService',
   ].join('\n');
   console.error(message);
 }
@@ -224,7 +224,7 @@ function renderScaffold(serviceInfo, typeNameMap) {
   lines.push(`export class ${serviceName}Handler implements ${serviceName}Handlers {`);
 
   const todoHints = {
-    usrPrompt: [
+    prompt: [
       'Validate required fields (questionId, sessionId, text/voiceStreamId).',
       'Perform your core processing (LLM, retrieval, workflow, etc.).',
       'Populate statusCode and errorMessage on failure.',

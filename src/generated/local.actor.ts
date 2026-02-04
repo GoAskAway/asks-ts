@@ -3,13 +3,12 @@
 
 import { ContextBridge, RpcEnvelopeBridge } from '@actor-rtc/actr';
 import type { PayloadType } from '@actor-rtc/actr';
-import { ATTACH_ROUTE_KEY, UNREGISTERDATASTREAM_ROUTE_KEY, USRPROMPT_ROUTE_KEY } from './ask_service.client.js';
-import { AskService_AssistantReply, AskService_AttachRequest, AskService_AttachResponse, AskService_UnregisterRequest, AskService_UnregisterResponse, AskService_UsrPromptRequest } from './ask_service.pb.js';
+import { ATTACH_ROUTE_KEY, PROMPT_ROUTE_KEY } from './ask.client.js';
+import { Ask_AssistantReply, Ask_AttachRequest, Ask_AttachResponse, Ask_UsrPromptRequest } from './ask.pb.js';
 
 export interface LocalHandler {
-  usrPrompt(request: AskService_UsrPromptRequest, ctx: ContextBridge): Promise<AskService_AssistantReply>;
-  attach(request: AskService_AttachRequest, ctx: ContextBridge): Promise<AskService_AttachResponse>;
-  unregisterDataStream(request: AskService_UnregisterRequest, ctx: ContextBridge): Promise<AskService_UnregisterResponse>;
+  prompt(request: Ask_UsrPromptRequest, ctx: ContextBridge): Promise<Ask_AssistantReply>;
+  attach(request: Ask_AttachRequest, ctx: ContextBridge): Promise<Ask_AttachResponse>;
 }
 
 export async function dispatch(
@@ -17,22 +16,16 @@ export async function dispatch(
   ctx: ContextBridge,
   envelope: RpcEnvelopeBridge
 ): Promise<Buffer> {
-  if (envelope.routeKey === USRPROMPT_ROUTE_KEY) {
-    const request = AskService_UsrPromptRequest.decode(envelope.payload);
-    const response = await handler.usrPrompt(request, ctx);
-    return AskService_AssistantReply.encode(response);
+  if (envelope.routeKey === PROMPT_ROUTE_KEY) {
+    const request = Ask_UsrPromptRequest.decode(envelope.payload);
+    const response = await handler.prompt(request, ctx);
+    return Ask_AssistantReply.encode(response);
   }
 
   if (envelope.routeKey === ATTACH_ROUTE_KEY) {
-    const request = AskService_AttachRequest.decode(envelope.payload);
+    const request = Ask_AttachRequest.decode(envelope.payload);
     const response = await handler.attach(request, ctx);
-    return AskService_AttachResponse.encode(response);
-  }
-
-  if (envelope.routeKey === UNREGISTERDATASTREAM_ROUTE_KEY) {
-    const request = AskService_UnregisterRequest.decode(envelope.payload);
-    const response = await handler.unregisterDataStream(request, ctx);
-    return AskService_UnregisterResponse.encode(response);
+    return Ask_AttachResponse.encode(response);
   }
 
   throw new Error(`Unknown route: ${envelope.routeKey}`);

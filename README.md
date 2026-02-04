@@ -1,6 +1,6 @@
 # asks-ts
 
-TypeScript actor service for `ask_service.proto`, built on the ACTR framework.
+TypeScript actor service for `ask.proto`, built on the ACTR framework.
 
 ## Setup
 
@@ -10,13 +10,13 @@ npm install
 
 ## Codegen
 
-使用命令生成（会刷新 `src/generated` 与 `src/ask_service_runtime.ts`，并在需要时更新 `src/ask_service.ts` 模板）：
+Run the command to generate (refreshes `src/generated` and `src/ask_service_runtime.ts`, and updates the `src/ask_service.ts` template when needed):
 
 ```bash
 npm run codegen
 ```
 
-仅刷新 `src/generated`：
+Only refresh `src/generated`:
 
 ```bash
 npm run codegen:proto
@@ -37,9 +37,8 @@ ACTR_CONFIG=/path/to/Actr.toml npm run start
 
 ## Routes
 
-- `ask_service.AskService.UsrPrompt`
-- `ask_service.AskService.Attach`
-- `ask_service.AskService.UnregisterDataStream`
+- `ask.AskService.Prompt`
+- `ask.AskService.Attach`
 
 ## Scaffold
 
@@ -47,5 +46,4 @@ Implement your business logic in:
 
 - `src/ask_service.ts`
 
-The scaffold methods include TODO markers for you to fill in.
 `src/ask_service_runtime.ts` is generated and should not be edited.

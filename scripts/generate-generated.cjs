@@ -29,7 +29,7 @@ function usage() {
     'Usage: generate-generated --config <Actr.toml> [--out <generated-dir>] [--proto-root <protos/remote>] [--lock <Actr.lock.toml>] [--dist-import <path>] [--emit-js]',
     '',
     'Example:',
-    '  node scripts/generate-generated.cjs --config Actr.toml --proto-root protos/local --out src/generated',
+    '  node scripts/generate-generated.cjs --config Actr.toml --proto-root askaway-proto --out src/generated',
   ].join('\n');
   console.error(message);
 }

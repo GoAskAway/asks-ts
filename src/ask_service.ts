@@ -2,36 +2,36 @@
 // Generated scaffold for user code.
 // Fill in the TODOs with your business logic.
 
-import type { ContextBridge, DataStream, ActrId } from '@actor-rtc/actr';
-import { v4 as uuidv4 } from 'uuid';
+import type { ContextBridge, DataStream } from '@actor-rtc/actr';
 
-import type { AskService_AssistantReply, AskService_AttachRequest, AskService_AttachResponse, AskService_UnregisterRequest, AskService_UnregisterResponse, AskService_UsrPromptRequest } from './generated/ask_service.pb.js';
+import type { Ask_AssistantReply, Ask_AttachRequest, Ask_AttachResponse, Ask_UsrPromptRequest } from './generated/ask.pb.js';
 import type { AskServiceHandlers } from './ask_service_runtime.js';
 
 export class AskServiceHandler implements AskServiceHandlers {
-  async usrPrompt(request: AskService_UsrPromptRequest, ctx: ContextBridge): Promise<AskService_AssistantReply> {
-    console.log('usrPrompt request:', JSON.stringify(request, null, 2));
-    // TODO: Implement usrPrompt business logic.
-    // TODO: Validate required fields (questionId, sessionId, text/voiceStreamId).
-    // TODO: Perform your core processing (LLM, retrieval, workflow, etc.).
-    // TODO: Populate statusCode and errorMessage on failure.
-    // TODO: Set streamId if you produce a streaming response.
+  async prompt(request: Ask_UsrPromptRequest, _ctx: ContextBridge): Promise<Ask_AssistantReply> {
+    const streamId = request.textResponseStreamId;
+    const voiceStreamId = request.voiceStreamId;
+    const ctx = _ctx;
 
-    const streamId = uuidv4();
+    if (voiceStreamId) {
+      await ctx.registerStream(voiceStreamId, (chunk) => {
+        if (!chunk) {
+          console.log(`Audio stream ${voiceStreamId} finished.`);
+          return;
+        }
+        console.log(`Received audio stream chunk seq ${chunk.sequence}`);
+      });
+    }
 
-    // Start a "coroutine" (background promise) to send data stream chunks
-    (async () => {
+    // Start a background promise to emit mock stream chunks.
+    void (async () => {
       try {
-        // Sleep for 1s
         await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // Get targetActrId from context callId
         const targetActrId = ctx.callId();
 
-        // Send 3 data stream chunks
-        for (let i = 1; i <= 3; i++) {
+        for (let i = 1; i <= 3; i += 1) {
           const chunk: DataStream = {
-            streamId: streamId,
+            streamId,
             sequence: i,
             payload: Buffer.from(`Chunk ${i} for stream ${streamId}`),
             metadata: [],
@@ -49,41 +49,22 @@ export class AskServiceHandler implements AskServiceHandlers {
       }
     })();
 
-    // Mock implementation for usrPrompt
     return {
       questionId: request.questionId,
       sessionId: request.sessionId,
       text: `Mock response to: ${request.text}`,
-      streamId: streamId,
+      streamId,
       statusCode: 200,
       errorMessage: '',
     };
   }
 
-  async attach(request: AskService_AttachRequest, _ctx: ContextBridge): Promise<AskService_AttachResponse> {
-    console.log('attach request:', { ...request, data: request.data ? `Buffer(${request.data.length})` : 'null' });
+  async attach(request: Ask_AttachRequest, _ctx: ContextBridge): Promise<Ask_AttachResponse> {
     // TODO: Implement attach business logic.
     // TODO: Validate attachment metadata (id, filename, type).
     // TODO: Persist data and return status/error.
-
-    // Mock implementation for attach
-    return {
-      id: request.id,
-      statusCode: 200,
-      errorMessage: '',
-    };
-  }
-
-  async unregisterDataStream(request: AskService_UnregisterRequest, _ctx: ContextBridge): Promise<AskService_UnregisterResponse> {
-    console.log('unregisterDataStream request:', JSON.stringify(request, null, 2));
-    // TODO: Implement unregisterDataStream business logic.
-    // TODO: Validate streamId and release any streaming resources.
-
-    // Mock implementation for unregisterDataStream
-    return {
-      success: true,
-      message: `Stream ${request.streamId} unregistered successfully`,
-    };
+    void request;
+    throw new Error('TODO: implement attach');
   }
 
 }

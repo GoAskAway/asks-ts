@@ -1,7 +1,7 @@
 // DO NOT EDIT.
-// Generated from protos/local/ask_service.proto
+// Generated from askaway-proto/ask.proto
 
-export enum AskService_AttachmentType {
+export enum Ask_AttachmentType {
   ATTACHMENT_TYPE_UNKNOWN = 0,
   IMAGE = 1,
   DOCUMENT = 2,
@@ -10,16 +10,18 @@ export enum AskService_AttachmentType {
   OTHER = 99,
 }
 
-export interface AskService_UsrPromptRequest {
+export interface Ask_UsrPromptRequest {
   questionId: string;
   sessionId: string;
   text: string;
   voiceStreamId: string;
-  location: AskService_Location | undefined;
+  location: Ask_Location | undefined;
   attachmentIds: string[];
+  textResponseStreamId: string;
+  voiceResponseStreamId: string;
 }
 
-export interface AskService_AssistantReply {
+export interface Ask_AssistantReply {
   questionId: string;
   sessionId: string;
   text: string;
@@ -28,37 +30,28 @@ export interface AskService_AssistantReply {
   errorMessage: string;
 }
 
-export interface AskService_AttachRequest {
+export interface Ask_AttachRequest {
   id: string;
   filename: string;
-  type: AskService_AttachmentType;
+  type: Ask_AttachmentType;
   data: Buffer;
 }
 
-export interface AskService_AttachResponse {
+export interface Ask_AttachResponse {
   id: string;
   statusCode: number;
   errorMessage: string;
 }
 
-export interface AskService_Location {
+export interface Ask_Location {
   latitude: number;
   longitude: number;
   address: string;
   placeName: string;
 }
 
-export interface AskService_UnregisterRequest {
-  streamId: string;
-}
-
-export interface AskService_UnregisterResponse {
-  success: boolean;
-  message: string;
-}
-
-export const AskService_UsrPromptRequest = {
-  encode(message: AskService_UsrPromptRequest): Buffer {
+export const Ask_UsrPromptRequest = {
+  encode(message: Ask_UsrPromptRequest): Buffer {
     const parts: Buffer[] = [];
 
     if (message.questionId !== undefined && message.questionId !== null) {
@@ -95,7 +88,7 @@ export const AskService_UsrPromptRequest = {
 
     if (message.location !== undefined && message.location !== null) {
       const tag = 42;
-      const message_locationBytes = AskService_Location.encode(message.location);
+      const message_locationBytes = Ask_Location.encode(message.location);
       parts.push(encodeVarint(tag));
       parts.push(encodeVarint(message_locationBytes.length));
       parts.push(message_locationBytes);
@@ -109,10 +102,26 @@ export const AskService_UsrPromptRequest = {
       parts.push(valueBytes);
     }
 
+    if (message.textResponseStreamId !== undefined && message.textResponseStreamId !== null) {
+      const tag = 58;
+      const message_textResponseStreamIdBytes = Buffer.from(message.textResponseStreamId, 'utf8');
+      parts.push(encodeVarint(tag));
+      parts.push(encodeVarint(message_textResponseStreamIdBytes.length));
+      parts.push(message_textResponseStreamIdBytes);
+    }
+
+    if (message.voiceResponseStreamId !== undefined && message.voiceResponseStreamId !== null) {
+      const tag = 66;
+      const message_voiceResponseStreamIdBytes = Buffer.from(message.voiceResponseStreamId, 'utf8');
+      parts.push(encodeVarint(tag));
+      parts.push(encodeVarint(message_voiceResponseStreamIdBytes.length));
+      parts.push(message_voiceResponseStreamIdBytes);
+    }
+
     return Buffer.concat(parts);
   },
 
-  decode(buffer: Buffer): AskService_UsrPromptRequest {
+  decode(buffer: Buffer): Ask_UsrPromptRequest {
     let offset = 0;
     let questionId = '';
     let sessionId = '';
@@ -120,6 +129,8 @@ export const AskService_UsrPromptRequest = {
     let voiceStreamId = '';
     let location = undefined;
     let attachmentIds = [];
+    let textResponseStreamId = '';
+    let voiceResponseStreamId = '';
 
     while (offset < buffer.length) {
       const tagResult = decodeVarint(buffer, offset);
@@ -152,10 +163,16 @@ export const AskService_UsrPromptRequest = {
             voiceStreamId = value.toString('utf8');
             break;
           case 5:
-            location = AskService_Location.decode(value);
+            location = Ask_Location.decode(value);
             break;
           case 6:
             attachmentIds.push(value.toString('utf8'));
+            break;
+          case 7:
+            textResponseStreamId = value.toString('utf8');
+            break;
+          case 8:
+            voiceResponseStreamId = value.toString('utf8');
             break;
           default:
             break;
@@ -173,12 +190,14 @@ export const AskService_UsrPromptRequest = {
       voiceStreamId,
       location,
       attachmentIds,
+      textResponseStreamId,
+      voiceResponseStreamId,
     };
   },
 };
 
-export const AskService_AssistantReply = {
-  encode(message: AskService_AssistantReply): Buffer {
+export const Ask_AssistantReply = {
+  encode(message: Ask_AssistantReply): Buffer {
     const parts: Buffer[] = [];
 
     if (message.questionId !== undefined && message.questionId !== null) {
@@ -230,7 +249,7 @@ export const AskService_AssistantReply = {
     return Buffer.concat(parts);
   },
 
-  decode(buffer: Buffer): AskService_AssistantReply {
+  decode(buffer: Buffer): Ask_AssistantReply {
     let offset = 0;
     let questionId = '';
     let sessionId = '';
@@ -306,8 +325,8 @@ export const AskService_AssistantReply = {
   },
 };
 
-export const AskService_AttachRequest = {
-  encode(message: AskService_AttachRequest): Buffer {
+export const Ask_AttachRequest = {
+  encode(message: Ask_AttachRequest): Buffer {
     const parts: Buffer[] = [];
 
     if (message.id !== undefined && message.id !== null) {
@@ -342,7 +361,7 @@ export const AskService_AttachRequest = {
     return Buffer.concat(parts);
   },
 
-  decode(buffer: Buffer): AskService_AttachRequest {
+  decode(buffer: Buffer): Ask_AttachRequest {
     let offset = 0;
     let id = '';
     let filename = '';
@@ -408,8 +427,8 @@ export const AskService_AttachRequest = {
   },
 };
 
-export const AskService_AttachResponse = {
-  encode(message: AskService_AttachResponse): Buffer {
+export const Ask_AttachResponse = {
+  encode(message: Ask_AttachResponse): Buffer {
     const parts: Buffer[] = [];
 
     if (message.id !== undefined && message.id !== null) {
@@ -437,7 +456,7 @@ export const AskService_AttachResponse = {
     return Buffer.concat(parts);
   },
 
-  decode(buffer: Buffer): AskService_AttachResponse {
+  decode(buffer: Buffer): Ask_AttachResponse {
     let offset = 0;
     let id = '';
     let statusCode = 0;
@@ -498,8 +517,8 @@ export const AskService_AttachResponse = {
   },
 };
 
-export const AskService_Location = {
-  encode(message: AskService_Location): Buffer {
+export const Ask_Location = {
+  encode(message: Ask_Location): Buffer {
     const parts: Buffer[] = [];
 
     if (message.latitude !== undefined && message.latitude !== null) {
@@ -533,7 +552,7 @@ export const AskService_Location = {
     return Buffer.concat(parts);
   },
 
-  decode(buffer: Buffer): AskService_Location {
+  decode(buffer: Buffer): Ask_Location {
     let offset = 0;
     let latitude = 0;
     let longitude = 0;
@@ -594,138 +613,6 @@ export const AskService_Location = {
       longitude,
       address,
       placeName,
-    };
-  },
-};
-
-export const AskService_UnregisterRequest = {
-  encode(message: AskService_UnregisterRequest): Buffer {
-    const parts: Buffer[] = [];
-
-    if (message.streamId !== undefined && message.streamId !== null) {
-      const tag = 10;
-      const message_streamIdBytes = Buffer.from(message.streamId, 'utf8');
-      parts.push(encodeVarint(tag));
-      parts.push(encodeVarint(message_streamIdBytes.length));
-      parts.push(message_streamIdBytes);
-    }
-
-    return Buffer.concat(parts);
-  },
-
-  decode(buffer: Buffer): AskService_UnregisterRequest {
-    let offset = 0;
-    let streamId = '';
-
-    while (offset < buffer.length) {
-      const tagResult = decodeVarint(buffer, offset);
-      const tag = Number(tagResult.value);
-      offset += tagResult.length;
-
-      const fieldNumber = tag >> 3;
-      const wireType = tag & 0x07;
-
-      if (wireType === 2) {
-        const lengthResult = decodeVarint(buffer, offset);
-        const length = varintToNumber(lengthResult.value, 'length');
-        offset += lengthResult.length;
-
-        const end = offset + length;
-        const value: Buffer = buffer.subarray(offset, end);
-        offset = end;
-
-        switch (fieldNumber) {
-          case 1:
-            streamId = value.toString('utf8');
-            break;
-          default:
-            break;
-        }
-        continue;
-      }
-
-      throw new Error(`Unsupported wire type: ${wireType}`);
-    }
-
-    return {
-      streamId,
-    };
-  },
-};
-
-export const AskService_UnregisterResponse = {
-  encode(message: AskService_UnregisterResponse): Buffer {
-    const parts: Buffer[] = [];
-
-    if (message.success !== undefined && message.success !== null) {
-      const tag = 8;
-      parts.push(encodeVarint(tag));
-      parts.push(encodeVarint(message.success ? 1 : 0));
-    }
-
-    if (message.message !== undefined && message.message !== null) {
-      const tag = 18;
-      const message_messageBytes = Buffer.from(message.message, 'utf8');
-      parts.push(encodeVarint(tag));
-      parts.push(encodeVarint(message_messageBytes.length));
-      parts.push(message_messageBytes);
-    }
-
-    return Buffer.concat(parts);
-  },
-
-  decode(buffer: Buffer): AskService_UnregisterResponse {
-    let offset = 0;
-    let success = false;
-    let message = '';
-
-    while (offset < buffer.length) {
-      const tagResult = decodeVarint(buffer, offset);
-      const tag = Number(tagResult.value);
-      offset += tagResult.length;
-
-      const fieldNumber = tag >> 3;
-      const wireType = tag & 0x07;
-
-      if (wireType === 2) {
-        const lengthResult = decodeVarint(buffer, offset);
-        const length = varintToNumber(lengthResult.value, 'length');
-        offset += lengthResult.length;
-
-        const end = offset + length;
-        const value: Buffer = buffer.subarray(offset, end);
-        offset = end;
-
-        switch (fieldNumber) {
-          case 2:
-            message = value.toString('utf8');
-            break;
-          default:
-            break;
-        }
-        continue;
-      }
-
-      if (wireType === 0) {
-        const valueResult = decodeVarint(buffer, offset);
-        offset += valueResult.length;
-
-        switch (fieldNumber) {
-          case 1:
-            success = varintToNumber(valueResult.value, 'bool') !== 0;
-            break;
-          default:
-            break;
-        }
-        continue;
-      }
-
-      throw new Error(`Unsupported wire type: ${wireType}`);
-    }
-
-    return {
-      success,
-      message,
     };
   },
 };
