@@ -6,7 +6,7 @@ name = "ask-service"
 description = "Ask service actor"
 
 [package.actr_type]
-manufacturer = "askaway"
+manufacturer = "askaway1"
 name = "AskService"
 
 [system.signaling]
@@ -27,4 +27,4 @@ turn_urls = ["turn:actrix1.develenv.com:3478"]
 
 [[acl.rules]]
 permission = "allow"
-types = ["askaway+Client"]
+types = ["askaway1+Client"]
