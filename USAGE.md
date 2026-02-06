@@ -22,7 +22,7 @@ Handle user text or voice prompts.
   - If you need streaming responses, generate a `streamId` and send chunks via `ctx.sendDataStream`.
 
 ```typescript
-async prompt(request: Ask_UsrPromptRequest, ctx: ContextBridge): Promise<Ask_AssistantReply> {
+async prompt(request: Ask_UsrPromptRequest, ctx: Context): Promise<Ask_AssistantReply> {
   const streamId = uuidv4();
 
   (async () => {
@@ -60,7 +60,7 @@ Handle attachment uploads (images, documents, audio, etc.).
   - Return processing status.
 
 ```typescript
-async attach(request: Ask_AttachRequest, _ctx: ContextBridge): Promise<Ask_AttachResponse> {
+async attach(request: Ask_AttachRequest, _ctx: Context): Promise<Ask_AttachResponse> {
   return {
     id: request.id,
     statusCode: 200,

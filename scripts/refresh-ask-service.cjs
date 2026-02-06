@@ -48,7 +48,7 @@ function main() {
 
   const serviceArgs = [
     '--proto',
-    'askaway-proto/ask.proto',
+    'askaway-proto/ask-service/ask.proto',
     '--out-dir',
     'src',
     '--service',

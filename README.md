@@ -1,22 +1,23 @@
 # asks-ts
 
-TypeScript actor service for `ask.proto`, built on the ACTR framework.
+TypeScript actor service for the Askaway server, built on the ACTR framework. Generated code (`src/generated`) is produced from **ask-service** (`askaway-proto/ask-service/ask.proto`).
 
 ## Setup
 
 ```bash
 npm install
+npm run codegen:proto
 ```
 
 ## Codegen
 
-Run the command to generate (refreshes `src/generated` and `src/ask_service_runtime.ts`, and updates the `src/ask_service.ts` template when needed):
+Run the command to generate from **ask-service** (refreshes `src/generated` and `src/ask_service_runtime.ts`, and updates the `src/ask_service.ts` template when needed):
 
 ```bash
 npm run codegen
 ```
 
-Only refresh `src/generated`:
+Only refresh `src/generated` from ask-service:
 
 ```bash
 npm run codegen:proto

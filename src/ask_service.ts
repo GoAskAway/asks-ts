@@ -2,33 +2,36 @@
 // Generated scaffold for user code.
 // Fill in the TODOs with your business logic.
 
-import type { ContextBridge, DataStream } from '@actor-rtc/actr';
+import type { Context, DataStream, StreamSignal } from '@actor-rtc/actr';
 
 import type { Ask_AssistantReply, Ask_AttachRequest, Ask_AttachResponse, Ask_UsrPromptRequest } from './generated/ask.pb.js';
 import type { AskServiceHandlers } from './ask_service_runtime.js';
 
 export class AskServiceHandler implements AskServiceHandlers {
-  async prompt(request: Ask_UsrPromptRequest, _ctx: ContextBridge): Promise<Ask_AssistantReply> {
+  async prompt(request: Ask_UsrPromptRequest, ctx: Context): Promise<Ask_AssistantReply> {
     const streamId = request.textResponseStreamId;
     const voiceStreamId = request.voiceStreamId;
-    const ctx = _ctx;
 
     if (voiceStreamId) {
-      await ctx.registerStream(voiceStreamId, (chunk) => {
-        if (!chunk) {
+      await ctx.registerStream(voiceStreamId, (err: Error | null, signal: StreamSignal) => {
+        if (err) {
+          console.error(`Audio stream ${voiceStreamId} callback error:`, err);
+          return;
+        }
+        if (!signal) {
           console.log(`Audio stream ${voiceStreamId} finished.`);
           return;
         }
-        console.log(`Received audio stream chunk seq ${chunk.sequence}`);
+        console.log(`Received audio stream chunk seq ${signal.chunk.sequence}`);
       });
     }
 
-    // Start a background promise to emit mock stream chunks.
+    // Capture callId synchronously while RPC context is still valid (client has already registered the stream).
+    const targetActrId = ctx.callId();
     void (async () => {
+      // sleep 100ms
+      await new Promise(resolve => setTimeout(resolve, 100));
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        const targetActrId = ctx.callId();
-
         for (let i = 1; i <= 3; i += 1) {
           const chunk: DataStream = {
             streamId,
@@ -45,7 +48,7 @@ export class AskServiceHandler implements AskServiceHandlers {
           }
         }
       } catch (err) {
-        console.error(`Error sending data stream ${streamId}:`, err);
+        console.error(`[AskService] Error sending data stream ${streamId}:`, err);
       }
     })();
 
@@ -53,13 +56,12 @@ export class AskServiceHandler implements AskServiceHandlers {
       questionId: request.questionId,
       sessionId: request.sessionId,
       text: `Mock response to: ${request.text}`,
-      streamId,
       statusCode: 200,
       errorMessage: '',
     };
   }
 
-  async attach(request: Ask_AttachRequest, _ctx: ContextBridge): Promise<Ask_AttachResponse> {
+  async attach(request: Ask_AttachRequest, _ctx: Context): Promise<Ask_AttachResponse> {
     // TODO: Implement attach business logic.
     // TODO: Validate attachment metadata (id, filename, type).
     // TODO: Persist data and return status/error.

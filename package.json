@@ -12,7 +12,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@actor-rtc/actr": "https://github.com/actor-rtc/actr-ts/releases/download/v0.1.4/actor-rtc-actr-0.1.4.tgz",
+    "@actor-rtc/actr": "https://github.com/actor-rtc/actr-ts/releases/download/v0.1.9/actor-rtc-actr-0.1.9.tgz",
     "uuid": "^13.0.0"
   },
   "devDependencies": {

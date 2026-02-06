@@ -1,5 +1,5 @@
 // DO NOT EDIT.
-// Generated from askaway-proto/ask.proto
+// Generated from askaway-proto/ask-service/ask.proto
 
 export enum Ask_AttachmentType {
   ATTACHMENT_TYPE_UNKNOWN = 0,
@@ -25,7 +25,6 @@ export interface Ask_AssistantReply {
   questionId: string;
   sessionId: string;
   text: string;
-  streamId: string;
   statusCode: number;
   errorMessage: string;
 }
@@ -224,22 +223,14 @@ export const Ask_AssistantReply = {
       parts.push(message_textBytes);
     }
 
-    if (message.streamId !== undefined && message.streamId !== null) {
-      const tag = 34;
-      const message_streamIdBytes = Buffer.from(message.streamId, 'utf8');
-      parts.push(encodeVarint(tag));
-      parts.push(encodeVarint(message_streamIdBytes.length));
-      parts.push(message_streamIdBytes);
-    }
-
     if (message.statusCode !== undefined && message.statusCode !== null) {
-      const tag = 40;
+      const tag = 32;
       parts.push(encodeVarint(tag));
       parts.push(encodeVarint(message.statusCode));
     }
 
     if (message.errorMessage !== undefined && message.errorMessage !== null) {
-      const tag = 50;
+      const tag = 42;
       const message_errorMessageBytes = Buffer.from(message.errorMessage, 'utf8');
       parts.push(encodeVarint(tag));
       parts.push(encodeVarint(message_errorMessageBytes.length));
@@ -254,7 +245,6 @@ export const Ask_AssistantReply = {
     let questionId = '';
     let sessionId = '';
     let text = '';
-    let streamId = '';
     let statusCode = 0;
     let errorMessage = '';
 
@@ -285,10 +275,7 @@ export const Ask_AssistantReply = {
           case 3:
             text = value.toString('utf8');
             break;
-          case 4:
-            streamId = value.toString('utf8');
-            break;
-          case 6:
+          case 5:
             errorMessage = value.toString('utf8');
             break;
           default:
@@ -302,7 +289,7 @@ export const Ask_AssistantReply = {
         offset += valueResult.length;
 
         switch (fieldNumber) {
-          case 5:
+          case 4:
             statusCode = varintToNumber(valueResult.value, 'int32');
             break;
           default:
@@ -318,7 +305,6 @@ export const Ask_AssistantReply = {
       questionId,
       sessionId,
       text,
-      streamId,
       statusCode,
       errorMessage,
     };
